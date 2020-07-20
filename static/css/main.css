@@ -14,3 +14,11 @@ body {
 #bottom-text{
 	margin-left: 50px;
 }
+
+#hidden-word{
+	padding-left: 10%;
+}
+
+#letter-list{
+	padding-left: 10%;
+}

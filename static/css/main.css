@@ -1,0 +1,16 @@
+body {
+    background-color: #ebeff5;
+}
+
+.card {
+	background-color: #CFECD8;
+    text-align: center;
+    width: 400px;
+    margin-left: 50px;
+    margin-top: 50px;
+
+}
+
+#bottom-text{
+	margin-left: 50px;
+}

@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    
+<head>
+	<title>Register</title>
+	<link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+</head>
+<body>
+	<div class="card">
+    	<div class="card-body">
+      		<h4 class="card-title">REGISTER</h4>
+			<form method="POST" action="">
+				{% csrf_token %}
+				<span>User Name</span><br>
+				{{ form.username }}<br>
+				<span>Password:</span><br>
+				{{ form.password1 }}<br>
+				<span>Repeat password:</span><br>
+				{{ form.password2 }}<br>
+				<input class="btn login_btn" type="submit" value="Register Account">
+			</form>
+		</div>
+		{{ form.errors }}
+	</div>		
+	<p id="bottom-text">Already have an account? <a href="{% url 'login' %}" >Login</a></p>
+</body>
+</html>

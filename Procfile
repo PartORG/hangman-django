@@ -1,0 +1,1 @@
+web: gunicorn hangman.wsgi --log-file -

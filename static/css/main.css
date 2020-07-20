@@ -2,6 +2,16 @@ body {
     background-color: #ebeff5;
 }
 
+#image-hm {
+	width: 150px;
+	height: 150px;
+	margin-left: 20%;
+}
+
+#image-title{
+	margin-left: 10%;
+}
+
 .card {
 	background-color: #CFECD8;
     text-align: center;
@@ -11,14 +21,22 @@ body {
 
 }
 
+.card-title{
+	margin-left: 5%;
+}
+
 #bottom-text{
 	margin-left: 50px;
 }
 
 #hidden-word{
-	margin-left: 10%;
+	margin-left: 4%;
 }
 
 #letter-list{
-	margin-left: 10%;
+	margin-left: 4%;
+}
+
+#result-text{
+	margin-left: 4%;
 }

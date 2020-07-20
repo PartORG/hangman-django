@@ -8,24 +8,37 @@ from django.contrib.auth import authenticate, login, logout
 from random import choice
 import string
 
+from django.views.generic import View
+from django.utils.decorators import method_decorator
+
 # Create your views here.
-@unauthenticated_user
-def registerPage(request):
-	form = CreateUserForm()
-	if request.method == 'POST':
-		form = CreateUserForm(request.POST)
+class RegisterPageView(View):
+	form_class = CreateUserForm
+	template_name = 'main_game/register.html'
+
+	@method_decorator(unauthenticated_user)
+	def get(self, request):
+		form = self.form_class(None)
+		context = {'form':form}
+		return render(request, 'main_game/register.html', context)
+
+	@method_decorator(unauthenticated_user)
+	def post(self, request):
+		form = self.form_class(request.POST)
 		if form.is_valid():
 			user = form.save()
 			username = form.cleaned_data.get('username')
 			return redirect('login')
 
-	context = {'form':form}
-	return render(request, 'main_game/register.html', context)
 
+class LoginPageView(View):
+	@method_decorator(unauthenticated_user)
+	def get(self, request):
+		context = {}
+		return render(request, 'main_game/login.html', context)
 
-@unauthenticated_user
-def loginPage(request):
-	if request.method == 'POST':
+	@method_decorator(unauthenticated_user)
+	def post(self, request):
 		username = request.POST.get('username')
 		password = request.POST.get('password')
 
@@ -36,19 +49,24 @@ def loginPage(request):
 			return redirect('/')
 		else:
 			messages.info(request, 'Username or Password is incorrect!')
-			
-	context = {}
-	return render(request, 'main_game/login.html', context)
 
 
-def logoutUser(request):
-	logout(request)
-	return redirect('login')
+class LogoutView(View):
+	def get(self, request):
+		logout(request)
+		return redirect('login')
 
-@login_required(login_url='login')
-def game(request):
-	if request.method == 'GET':
-		# initialize game when login
+
+class GameView(View):
+	def get_word(self):
+		with open('wordlist.txt') as file:
+			words = file.read().splitlines()
+
+		rand_word = choice(words)
+		return rand_word.upper()
+
+	@method_decorator(login_required(login_url='login'))
+	def get(self,request):
 		word = get_word()
 		game = Game()
 		game.word = word
@@ -58,8 +76,9 @@ def game(request):
 		word_list = [letter if letter in game.used_letters else '-' for letter in game.word]
 		context = {'image':image,'game':game, 'hidden_word':word_list}
 		return render(request, 'main_game/game.html', context)
-	else:
-		# main process
+
+	@method_decorator(login_required(login_url='login'))
+	def post(self,request):
 		game_id = int(request.POST['game_id'])
 		game = Game.objects.get(id=game_id)
 
@@ -97,7 +116,8 @@ def game(request):
 				image = "/static/images/Hangman-"+str(6-game.lives)+".png"
 
 			word_list = [letter if letter in game.used_letters else '-' for letter in game.word]
-			context = {'image':image, 'game':game, 'hidden_word':word_list, 'info_message':messages}
+			# print(game.used_letters)
+			context = {'image':image, 'game':game, 'hidden_word':word_list, 'info_message':messages, 'b_disabled':game.used_letters}
 			return render(request, 'main_game/game.html', context)
 		else:
 			# end game
@@ -110,11 +130,3 @@ def game(request):
 			context = {'image':image, 'game':game, 'hidden_word':word_list, 'endgame_message':messages}
 
 			return render(request, 'main_game/game.html', context)
-		
-
-def get_word():
-	with open('wordlist.txt') as file:
-		words = file.read().splitlines()
-
-	rand_word = choice(words)
-	return rand_word.upper()

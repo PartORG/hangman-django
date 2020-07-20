@@ -10,22 +10,23 @@
 </head>
 <body>
 	<div class="card">
-    <div class="card-body">
-      <h4 class="card-title">LOGIN</h4>
-      <form method="POST" action="">
-		{% csrf_token %}
-		<span >User:</span>
-		<input type="text" name="username" placeholder="Username..." class="form-control">
-		<span >Password:</span>
-		<input type="password" name="password" placeholder="Password..." class="form-control" >
-		<input class="btn login_btn" type="submit" value="Login">
-	</form>
-    </div>
-  </div>
+		<div class="card-body">
+			<h4 class="card-title">LOGIN</h4>
+			<form method="POST" action="">
+				{% csrf_token %}
+				<span >User:</span>
+				<input type="text" name="username" placeholder="Username..." class="form-control">
+				<span >Password:</span>
+				<input type="password" name="password" placeholder="Password..." class="form-control" >
+				<input class="btn login_btn" type="submit" value="Login">
+			</form>
+		</div>
+	</div>
 
 	{% for message in messages %}
-		<p id="messages">{{ message }}</p>
+		<p id="messages-error">{{ message }}</p>
 	{% endfor %}
+	
 	<p id="bottom-text">Don't have an account? <a href="{% url 'register' %}" >Register</a></p>
 </body>
 

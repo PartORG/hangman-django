@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from random import choice
 import string
 
+from django.contrib import messages
+
 from django.views.generic import View
 from django.utils.decorators import method_decorator
 
@@ -29,6 +31,8 @@ class RegisterPageView(View):
 			user = form.save()
 			username = form.cleaned_data.get('username')
 			return redirect('login')
+		context = {'form':form}
+		return render(request, 'main_game/register.html', context)
 
 
 class LoginPageView(View):
@@ -50,6 +54,9 @@ class LoginPageView(View):
 		else:
 			messages.info(request, 'Username or Password is incorrect!')
 
+		context = {}
+		return render(request, 'main_game/login.html', context)
+
 
 class LogoutView(View):
 	def get(self, request):
@@ -67,7 +74,7 @@ class GameView(View):
 
 	@method_decorator(login_required(login_url='login'))
 	def get(self,request):
-		word = get_word()
+		word = self.get_word()
 		game = Game()
 		game.word = word
 		game.word_letters_count = len(set(game.word))

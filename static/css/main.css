@@ -40,3 +40,7 @@ body {
 #result-text{
 	margin-left: 4%;
 }
+
+#messages-error {
+	margin-left: 50px;
+}

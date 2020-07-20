@@ -16,13 +16,12 @@
 		<h4>Hidden word:</h4><br>
 		{% for letter in hidden_word %}
 			<h3 class="btn btn-success btn-lg">{{ letter }}</h3>
-		{% endfor %}
-			
+		{% endfor %}	
 	</div>
 	
 	<hr>
-	<h4>Choose Letter:</h4>
 	<div id="letter-list">
+		<h4>Choose Letter:</h4>
 		<form method="POST">
 			{% csrf_token %}
 			<input type="hidden" name="game_id" value="{{ game.id }}"/>
